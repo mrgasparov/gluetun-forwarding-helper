@@ -14,7 +14,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            mrgasparov/gluetun-port-mapper
+            mrgasparov/gluetun-forwarding-helper
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}

@@ -4,7 +4,7 @@
 
 [Gluetun](https://github.com/qdm12/gluetun/) is a lightweight swiss-knife-like VPN client to multiple VPN service providers. When used correctly, Gluetun allows you to launch applications on your NAS, or something like a Raspberry Pi, and ensure that all traffic is tunneled through your VPN provider. It takes care of complex firewall configurations, has a built-in kill-switch and other very useful features such as automatic port forwarding configuration.
 
-Gluetun Forwarding Helper bridges the gap between Gluetun and target applications, updating listening port configuration automatically. It is intended to be used as a service within a [docker compose stack](#docker-compose), which guarantees the correct initialization sequence between Gluetun, Gluetun Forwarding Helper a the target application.
+Gluetun Forwarding Helper bridges the gap between Gluetun and target applications, updating listening port configuration automatically. It is intended to be used as a service within a [docker compose stack](#docker-compose), which guarantees the correct initialization sequence between Gluetun, Gluetun Forwarding Helper and the target application.
 
 ## Supported Target Applications
 
@@ -63,16 +63,16 @@ services:
       - VPN_PORT_FORWARDING_PROVIDER=protonvpn
       - TZ=Europe/Berlin
   gluetun-forwarding-helper:
-    image: mrgasparov/gluetun-forwarding-helper:1.0
+    image: mrgasparov/gluetun-forwarding-helper:latest
     network_mode: service:gluetun
     depends_on: 
       - gluetun
     environment:
       - SERVICE=nicotine+
     volumes:
-      - /home/user/nicotine/config:/config
+      - /home/user/nicotine/data/.config/nicotine:/config
   nicotine:
-    image: mrgasparov/nicotine-novnc:2.0
+    image: mrgasparov/nicotine-novnc:latest
     network_mode: service:gluetun
     restart: unless-stopped
     depends_on:
@@ -82,8 +82,8 @@ services:
     environment:
       - RESOLUTION=1920x1080
     volumes:
-      - /home/user/nicotine/config:/root/.nicotine
-      - /home/user/nicotine/downloads:/root/downloads
+      - /home/user/nicotine/data:/data
+      - /home/user/nicotine/downloads:/downloads
 ```
 
 ## Parameters
